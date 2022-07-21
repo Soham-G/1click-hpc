@@ -41,8 +41,8 @@ HeadNode:
 Image:
   Os: alinux2
 DirectoryService:
-  DomainName: dc=${DC0},dc=${DC1},dc=${DC2}
-  DomainAddr: ldaps://${NLB_PUBLIC_DNS_NAME}
+  DomainName: corp.pcluster.com
+  DomainAddr: ldaps://corp.pcluster.com
   PasswordSecretArn: ${SECRET_ARN}
   DomainReadOnlyUser: cn=ReadOnlyUser,ou=Users,ou=${OU},dc=${DC0},dc=${DC1},dc=${DC2}
   LdapTlsReqCert: never
