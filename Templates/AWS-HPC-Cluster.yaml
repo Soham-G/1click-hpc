@@ -529,11 +529,11 @@ Resources:
               - ALB: !GetAtt ApplicationLoadBalancer.DNSName
             - !Sub 
               - echo "export NLB_PUBLIC_DNS_NAME='${NLB}'" >> cluster_env
-              - echo "export DC_DNS_0='${DC_DNS_0}'" >> cluster_env
-              - echo "export DC_DNS_1='${DC_DNS_1}'" >> cluster_env
+              # - echo "export DC_DNS_0='${DC_DNS_0}'" >> cluster_env
+              # - echo "export DC_DNS_1='${DC_DNS_1}'" >> cluster_env
               - NLB: !GetAtt NetworkLoadBalancer.DNSName
-              - DC_DNS_0: !If [CreateAD, !Select [0, !GetAtt ActiveDirectory.DnsIpAddresses], !Ref ADDNS0]
-              - DC_DNS_1: !If [CreateAD, !Select [1, !GetAtt ActiveDirectory.DnsIpAddresses], !Ref ADDNS1]
+              # - DC_DNS_0: !If [CreateAD, !Select [0, !GetAtt ActiveDirectory.DnsIpAddresses], !Ref ADDNS0]
+              # - DC_DNS_1: !If [CreateAD, !Select [1, !GetAtt ActiveDirectory.DnsIpAddresses], !Ref ADDNS1]
             - !Sub
               - echo "export KEY_PAIR=\"${AWS::StackName}-${RANDOM}\"" >> cluster_env
               - RANDOM: !Select [0, !Split ['-', !Select [2, !Split ['/', !Ref 'AWS::StackId' ]]]]
@@ -1122,8 +1122,9 @@ Resources:
           - !If [CreateVpc, !Ref PublicSubnetB, !Ref PublicSubnetBId]
         VpcId: !If [CreateVpc, !Ref VPC, !Ref VpcId]
   
-  DHCPSet:  # Change to allow users to use their own AD too
+  DHCPSet:  #TODO: Change to allow users to use their own AD too
     Type: AWS::EC2::DHCPOptions
+    Condition: CreateAD
     Properties: 
       DomainName: corp.pcluster.com
       DomainNameServers: 
